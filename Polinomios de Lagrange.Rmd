@@ -1,0 +1,84 @@
+---
+title: "Polinomios de Lagrange"
+author: "Axel Caro"
+output: word_document
+---
+
+# Definicio:
+
+Es un metodo para determinar puntos intermedios entre valores determinados por un punto. Se utiliza para aproximar una funcion que no se conoce dado un conjunto de datos conocidos $(x_i, f(x_i))$. El método de interpolacion busca hallar un polinomio que pase por dichos puntos.
+
+# Aplicaciones en ingenieria
+
+* Ingeniería Electrónica: Sirve para evaluar condiciones críticas de estabilidad dinámica.
+
+* Ingeniería Agronómica: Sirve para determinar el ritmo cardiaco de las plantas.
+
+*Ingeniería de Sistemas: Fractales. Análisis de imágenes.
+
+# Casos de Estudio
+
+* Procesamiento de señales.
+
+* Cálculo de valores faltantes.
+
+* Precios de productos.
+
+# Código
+
+Se requiere: El vector de $x$, el vector de $Y = f(x)$ y el punto a interpolar $X_j$
+
+```{r}
+
+lagrange <- function(x,y,xi){
+  n <- length(x) ; yi <- 0
+  for (i in 1:n){
+    lag <- 1
+    for (j in 1:n){
+      if(j != i){
+        lag <- lag * (xi - x[j])/(x[i] - x[j])
+      }
+    }
+    yi <- yi + y[i] * lag
+  }
+  return(yi)
+}
+
+```
+
+
+```{r}
+
+# Ejemplo
+x <- c(1,3,4)
+y <- c(2,4,3)
+xi <- 1 # Es la clave
+
+respuestas <- lagrange(x,y,xi)
+respuestas
+# El valor interpolado en 1 es igual a 2
+
+```
+# Interpolacion de Newton
+
+```{r}
+
+#install.packages("pracma")
+library(pracma)
+
+# Puntos de datos
+x <- c(1, 2, 3)  # Puntos x
+y <- c(2, 3, 5)  # Valores correspondientes de f(x)
+
+# Evaluar el polinomio interpolador de Newton en un punto
+x_eval <- 2.5  # Punto a evaluar
+resultadoNewton <- newtonInterp(x, y, x_eval)
+resultadoLagrange <- lagrangeInterp(x, y, x_eval)
+
+
+# Imprimir el resultado
+print(resultadoNewton)
+print(resultadoLagrange)
+
+```
+
